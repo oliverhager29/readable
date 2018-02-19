@@ -1,0 +1,13 @@
+curl -X POST --user name:password --header "Content-Type: application/json" --header "Accept: application/json" -d '{ "id": "19ee646693bb45bcbe6a260321610b42", "timestamp": 1467166872635, "title": "Test posting in React2", "body": "Body: Test posting in React2", "author": "author2", "category": "react" }' http://localhost:3001/posts
+
+{
+	"id": "8xf0y6ziyjabvozdd254nd",
+	"timestamp": 1467166872635,
+	"title": "Test posting in React1",
+	"body": "Body: Test posting in React1",
+	"author": "thingtwo",
+	"category": "react",
+	"voteScore": 1,
+	"deleted": false,
+	"commentCount": 0
+}

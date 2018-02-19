@@ -1,0 +1,12 @@
+curl --user name:password --header "Content-Type: application/json" --header "Accept: application/json" http://localhost:3001/comments/8tu4bsun805n8un48ve89
+
+{
+	"id": "91234253",
+	"timestamp": 1467166872638,
+	"body": "Body: comment1",
+	"author": "thingtwo",
+	"parentId": "8xf0y6ziyjabvozdd253nd",
+	"voteScore": 1,
+	"deleted": false,
+	"parentDeleted": false
+}

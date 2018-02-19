@@ -1,0 +1,12 @@
+curl --user namurl -X POST --user name:password --header "Content-Type: application/json" --header "Accept: application/json" -d '{ "id": "91234253", "timestamp": 1467166872638, "body": "Body: comment1", "author": "thingtwo", "parentId": "8xf0y6ziyjabvozdd253nd" }' http://localhost:3001/comments
+
+{
+	"id": "91234253",
+	"timestamp": 1467166872638,
+	"body": "Body: comment1",
+	"author": "thingtwo",
+	"parentId": "8xf0y6ziyjabvozdd253nd",
+	"voteScore": 1,
+	"deleted": false,
+	"parentDeleted": false
+}

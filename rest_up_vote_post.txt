@@ -1,0 +1,12 @@
+curl -X POST --user name:password --header "Content-Type: application/json" --header "Accept: application/json" -d '{"option":"upVote"}' http://localhost:3001/posts/91234253
+
+{
+	"id": "91234253",
+	"timestamp": 1467166872638,
+	"body": "Body: comment1",
+	"author": "thingtwo",
+	"parentId": "8xf0y6ziyjabvozdd253nd",
+	"voteScore": 2,
+	"deleted": false,
+	"parentDeleted": false
+}

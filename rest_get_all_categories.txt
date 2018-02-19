@@ -1,0 +1,18 @@
+curl --user name:password --header "Content-Type: application/json" --header "Accept: application/json" http://localhost:3001/categories
+
+{
+	"categories": [
+		{
+			"name": "react",
+			"path": "react"
+		},
+		{
+			"name": "redux",
+			"path": "redux"
+		},
+		{
+			"name": "udacity",
+			"path": "udacity"
+		}
+	]
+}

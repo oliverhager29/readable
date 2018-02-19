@@ -1,0 +1,13 @@
+curl -X DELETE --user name:password --header "Content-Type: application/json" --header "Accept: application/json" http://localhost:3001/posts/8xf0y6ziyjabvozdd254nd
+
+{
+	"id": "8xf0y6ziyjabvozdd254nd",
+	"timestamp": 1467166872635,
+	"title": "Test posting in React1",
+	"body": "Body: Test posting in React1",
+	"author": "thingtwo",
+	"category": "react",
+	"voteScore": 1,
+	"deleted": true,
+	"commentCount": 0
+}
