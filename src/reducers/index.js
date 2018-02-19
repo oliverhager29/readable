@@ -266,8 +266,8 @@ export function addComment(state=initialState, action) {
                     timestamp: post.timestamp,
                     commentIds: newAllCommentIdsByPost,
                     voteScore: post.voteScore,
-                    deleted: post.deleted,
-                    commentCount: post.commentCount
+                    commentCount: newAllCommentIdsByPost.length,
+                    deleted: post.deleted
                 }
             }
         },
@@ -340,7 +340,10 @@ export function removeComment(state=initialState, action) {
                     author: post.author,
                     category: post.category,
                     timestamp: post.timestamp,
-                    commentIds: newCommentsByPost
+                    commentIds: newCommentsByPost,
+                    voteScore: post.voteScore,
+                    commentCount: newCommentsByPost.length,
+                    deleted: post.deleted
                 }
             },
             byCategory: {

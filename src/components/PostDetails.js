@@ -155,7 +155,7 @@ class PostDetails extends Component {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                {comments.allIds.map(commentId => comments.byId[commentId] ).filter(comment => comment.deleted===false).map(function (comment, index) {
+                                {comments.allIds.map(commentId => comments.byId[commentId] ).filter(comment => comment.deleted===false).filter(comment => comment.parentId===postId).map(function (comment, index) {
                                     const commentDateTime = new Date(comment.timestamp)
                                     const commentDateTimeStr=commentDateTime.toLocaleString()
                                     return (

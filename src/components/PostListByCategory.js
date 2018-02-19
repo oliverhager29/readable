@@ -114,6 +114,7 @@ class PostListByCategory extends Component {
                                             <th>Author</th>
                                             <th>Category</th>
                                             <th>Vote Score</th>
+                                            <th>Comment Count</th>
                                             <th>Delete</th>
                                             <th>Down Vote</th>
                                             <th>Up Vote</th>
@@ -142,6 +143,7 @@ class PostListByCategory extends Component {
                                                             <td>{post.author}</td>
                                                             <td>{post.category}</td>
                                                             <td>{post.voteScore}</td>
+                                                            <td>{post.commentCount}</td>
                                                             <td><button onClick={() => handleDelete(post.id, index)} name="Delete">Delete</button></td>
                                                             <td><button onClick={() => handleDownVote(post.id, index)} name="Vote Down">Vote Down</button></td>
                                                             <td><button onClick={() => handleUpVote(post.id, index)} name="Vote Up">Vote Up</button></td>
