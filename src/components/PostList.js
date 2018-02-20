@@ -59,13 +59,7 @@ class PostList extends Component {
         const {actions} = this.props
         ReadableAPI.deletePost(postId).then(
             (post) => {
-                let postsCloned=this.state.posts.slice()
-                postsCloned[index] = post
-                this.setState(
-                    {
-                        posts: postsCloned
-                    })
-                actions.removePostProp(postId)
+                actions.removePostProp(post.id)
             }
         )
     }

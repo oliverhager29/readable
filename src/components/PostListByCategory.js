@@ -61,7 +61,7 @@ class PostListByCategory extends Component {
     }
 
     handleDelete = (postId, index) => {
-        const {actions} = this.props.actions
+        const {actions} = this.props
         ReadableAPI.deletePost(postId).then(
             (post) => {
                 actions.removePostProp(post.id)
