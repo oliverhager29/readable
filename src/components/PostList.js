@@ -134,7 +134,9 @@ class PostList extends Component {
                                         </tr>
                                         </thead>
                                         <tbody>
-                                            {posts.allIds.map(postId => posts.byId[postId] ).filter(post => post.deleted===false).map(function (post, index) {
+                                            {(posts===null || posts.allIds==null || posts.allIds.length===0) ?
+                                                <tr><td colSpan={12}>no posts available</td></tr>
+                                                :posts.allIds.map(postId => posts.byId[postId] ).filter(post => post.deleted===false).map(function (post, index) {
                                                     const postId = post.id
                                                     const dateTime = new Date(post.timestamp)
                                                     const dateTimeStr=dateTime.toLocaleString()

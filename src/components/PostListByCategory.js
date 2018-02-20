@@ -122,8 +122,8 @@ class PostListByCategory extends Component {
                                         </tr>
                                         </thead>
                                         <tbody>
-                                            {posts.byCategory[category]==null?
-                                                <tr><td colSpan={11}>no posts available</td></tr>
+                                            {(posts===null || posts.allIds==null || posts.allIds.length===0 || posts.byCategory==null || posts.byCategory[category]==null || posts.byCategory[category].length===0) ?
+                                                <tr><td colSpan={12}>no posts available</td></tr>
                                                 :posts.byCategory[category].map(function (postId, index) {
                                                     let post = posts.byId[postId]
                                                     const dateTime = new Date(post.timestamp)
