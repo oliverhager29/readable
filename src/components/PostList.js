@@ -15,7 +15,10 @@ Modal.setAppElement('#root');
 class PostList extends Component {
     state = {
         isCreatePostModalOpen: false,
-        isEditPostModalOpen: []
+        isEditPostModalOpen: [],
+        isSortedByTimestamp: true,
+        isSortedByVoteScore: false,
+        isAscending: true
     }
 
     openCreatePostModal() {
@@ -64,12 +67,31 @@ class PostList extends Component {
         )
     }
 
+    handleSortByTimestamp = () => {
+        let isAscending = true
+        if(this.state.isSortedByTimestamp) {
+            isAscending=!this.state.isAscending
+        }
+        this.setState({isSortedByTimestamp: true, isSortedByVoteScore: false, isAscending: isAscending})
+    }
+
+    handleSortByVoteScore = () => {
+        let isAscending = true
+        if(this.state.isSortedByVoteScore) {
+            isAscending=!this.state.isAscending
+        }
+        this.setState({isSortedByTimestamp: false, isSortedByVoteScore: true, isAscending: isAscending})
+    }
+
     constructor(props) {
         super(props)
         this.openCreatePostModal = this.openCreatePostModal.bind(this);
         this.closeCreatePostModal = this.closeCreatePostModal.bind(this);
         this.openEditPostModal = this.openEditPostModal.bind(this);
         this.closeEditPostModal = this.closeEditPostModal.bind(this);
+
+        this.handleSortByTimestamp = this.handleSortByTimestamp.bind(this);
+        this.handleSortByVoteScore = this.handleSortByVoteScore.bind(this);
     }
 
     render() {
@@ -86,7 +108,7 @@ class PostList extends Component {
         if(comments==null) {
             comments = {allIds: [], byId: {}}
         }
-
+        const {isSortedByTimestamp, isSortedByVoteScore, isAscending} = this.state
         const handleDownVote = this.handleDownVote
         const handleUpVote = this.handleUpVote
         const handleDelete = this.handleDelete
@@ -120,12 +142,12 @@ class PostList extends Component {
                                         <thead className={"table-header"}>
                                         <tr>
                                             <th>Id</th>
-                                            <th>Timestamp</th>
+                                            <th>Timestamp<button><img height='20' width='20' src={(isSortedByTimestamp?(isAscending?'./sort-up.svg':'./sort-down.svg'):'./sort-arrows-couple-pointing-up-and-down.svg')} alt="sort by timestamp" onClick={this.handleSortByTimestamp} /></button></th>
                                             <th>Title</th>
                                             <th>Body</th>
                                             <th>Author</th>
                                             <th>Category</th>
-                                            <th>Vote Score</th>
+                                            <th>Vote Score<button><img height='20' width='20' src={(isSortedByVoteScore?(isAscending?'./sort-up.svg':'./sort-down.svg'):'./sort-arrows-couple-pointing-up-and-down.svg')} alt="sort by vote score" onClick={this.handleSortByVoteScore} /></button></th>
                                             <th>Comment Count</th>
                                             <th>Delete</th>
                                             <th>Down Vote</th>
@@ -136,7 +158,28 @@ class PostList extends Component {
                                         <tbody>
                                             {(posts===null || posts.allIds==null || posts.allIds.length===0) ?
                                                 <tr><td colSpan={12}>no posts available</td></tr>
-                                                :posts.allIds.map(postId => posts.byId[postId] ).filter(post => post.deleted===false).map(function (post, index) {
+                                                :posts.allIds.map(postId => posts.byId[postId] )
+                                                    .filter(post => post.deleted===false)
+                                                    .sort(function(a,b) {
+                                                        if(isSortedByTimestamp) {
+                                                            if(isAscending) {
+                                                                return a.timestamp - b.timestamp
+                                                            }
+                                                            else {
+                                                                return b.timestamp - a.timestamp
+                                                            }
+                                                        }
+                                                        else if(isSortedByVoteScore) {
+                                                            if(isAscending) {
+                                                                return a.voteScore - b.voteScore
+                                                            }
+                                                            else {
+                                                                return b.voteScore - a.voteScore
+                                                            }
+                                                        }
+                                                        return 0
+                                                    })
+                                                    .map(function (post, index) {
                                                     const postId = post.id
                                                     const dateTime = new Date(post.timestamp)
                                                     const dateTimeStr=dateTime.toLocaleString()

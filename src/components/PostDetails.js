@@ -32,7 +32,10 @@ class PostDetails extends Component {
         this.setState(
             {
                 post: post,
-                comments: comments
+                comments: comments,
+                isSortedByTimestamp: true,
+                isSortedByVoteScore: false,
+                isAscending: true
             })
     }
 
@@ -88,12 +91,31 @@ class PostDetails extends Component {
         )
     }
 
+    handleSortByTimestamp = () => {
+        let isAscending = true
+        if(this.state.isSortedByTimestamp) {
+            isAscending=!this.state.isAscending
+        }
+        this.setState({isSortedByTimestamp: true, isSortedByVoteScore: false, isAscending: isAscending})
+    }
+
+    handleSortByVoteScore = () => {
+        let isAscending = true
+        if(this.state.isSortedByVoteScore) {
+            isAscending=!this.state.isAscending
+        }
+        this.setState({isSortedByTimestamp: false, isSortedByVoteScore: true, isAscending: isAscending})
+    }
+
     constructor(props) {
         super(props)
         this.openCreateCommentModal = this.openCreateCommentModal.bind(this);
         this.closeCreateCommentModal = this.closeCreateCommentModal.bind(this);
         this.openEditCommentModal = this.openEditCommentModal.bind(this);
         this.closeEditCommentModal = this.closeEditCommentModal.bind(this);
+
+        this.handleSortByTimestamp = this.handleSortByTimestamp.bind(this);
+        this.handleSortByVoteScore = this.handleSortByVoteScore.bind(this);
     }
 
     render() {
@@ -113,6 +135,7 @@ class PostDetails extends Component {
         if(comments==null) {
             comments = {allIds: [], byId: {}}
         }
+        const {isSortedByTimestamp, isSortedByVoteScore, isAscending} = this.state
         const handleDelete = this.handleDelete
         const isEditCommentModalOpen = this.state.isEditCommentModalOpen
         const closeEditCommentModal = this.closeEditCommentModal
@@ -144,10 +167,10 @@ class PostDetails extends Component {
                                 <thead className="table-header">
                                     <tr>
                                         <th>Id</th>
-                                        <th>Timestamp</th>
+                                        <th>Timestamp<button><img height='20' width='20' src={(isSortedByTimestamp?(isAscending?'../sort-up.svg':'../sort-down.svg'):'../sort-arrows-couple-pointing-up-and-down.svg')} alt="sort by timestamp" onClick={this.handleSortByTimestamp} /></button></th>
                                         <th>Body</th>
                                         <th>Author</th>
-                                        <th>Vote Score</th>
+                                        <th>Vote Score<button><img height='20' width='20' src={(isSortedByVoteScore?(isAscending?'../sort-up.svg':'../sort-down.svg'):'../sort-arrows-couple-pointing-up-and-down.svg')} alt="sort by vote score" onClick={this.handleSortByVoteScore} /></button></th>
                                         <th>Down Vote</th>
                                         <th>Up Vote</th>
                                         <th>Delete</th>
@@ -157,7 +180,29 @@ class PostDetails extends Component {
                                 <tbody>
                                 {(comments===null || comments.allIds==null || comments.allIds.length===0 || post===null || post.commentCount===0) ?
                                     <tr><td colSpan={12}>no comments available</td></tr>
-                                    :comments.allIds.map(commentId => comments.byId[commentId] ).filter(comment => comment.deleted===false).filter(comment => comment.parentId===postId).map(function (comment, index) {
+                                    :comments.allIds.map(commentId => comments.byId[commentId] )
+                                        .filter(comment => comment.deleted===false)
+                                        .filter(comment => comment.parentId===postId)
+                                        .sort(function(a,b) {
+                                            if(isSortedByTimestamp) {
+                                                if(isAscending) {
+                                                    return a.timestamp - b.timestamp
+                                                }
+                                                else {
+                                                    return b.timestamp - a.timestamp
+                                                }
+                                            }
+                                            else if(isSortedByVoteScore) {
+                                                if(isAscending) {
+                                                    return a.voteScore - b.voteScore
+                                                }
+                                                else {
+                                                    return b.voteScore - a.voteScore
+                                                }
+                                            }
+                                            return 0
+                                        })
+                                        .map(function (comment, index) {
                                     const commentDateTime = new Date(comment.timestamp)
                                     const commentDateTimeStr=commentDateTime.toLocaleString()
                                     return (

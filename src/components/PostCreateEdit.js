@@ -61,7 +61,11 @@ class PostCreateEdit extends Component {
                             body: body,
                             author: author,
                             category: category,
-                            timestamp: now})
+                            timestamp: Date.now(),
+                            voteScore: 0,
+                            deleted: false,
+                            parentDeleted: false
+                        })
                         if(closeModal!=null) {
                             closeModal()
                         }
