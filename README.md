@@ -5,6 +5,8 @@ The main page consists of links to posts by category and all posts. Each posts e
 In the root component (App) all valid routes are defined. Posts by category have a URL /{category} and post details have a URL /{category}/{post.id}. If post.id is the id of a deleted or non-existant post or  category a non-existant category then a 404 NotFound page is displayed. Same for any other invalid URL.
 Further the root component has a Redux store that is propagted into the child components with the action functions.
 
+Posts and comments can be sorted either by timestamp or vote score. The sorting can ascending or descending.
+
 Redux store model (with sample data):
 ```i
     categories: [
