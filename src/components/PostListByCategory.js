@@ -124,6 +124,25 @@ class PostListByCategory extends Component {
         const openEditPostModal = this.openEditPostModal
         return (
             <div>
+                                <div id="categories">
+                                    <h1>Posts by Categories:</h1>
+                                    <table className="form">
+                                        <tbody>
+                                        {categories.map(function (category, index) {
+                                            return (
+                                                <tr key={category.name} >
+                                                    <td>
+                                                        <Link to={{
+                                                            pathname: '/'+category.path
+                                                        }}>
+                                                            View Posts in Category {category.name}
+                                                        </Link>
+                                                    </td>
+                                                </tr>
+                                            )})}
+                                        </tbody>
+                                    </table>
+                                </div>
                                 <div id="postsByCategory">
                                     <h1>Posts:</h1>
                                     <table>
