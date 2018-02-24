@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {BrowserRouter, Route, Switch} from 'react-router-dom'
+import {Link, BrowserRouter, Route, Switch} from 'react-router-dom'
 import { connect } from 'react-redux'
 import Loading from 'react-loading'
 import '../App.css';
@@ -16,6 +16,13 @@ const NotFound = () =>
     <div>
         <h3>404 page not found</h3>
         <p>We are sorry but the page you are looking for does not exist.</p>
+        <td>
+            <Link to={{
+                pathname: '/'
+            }}>
+                Home
+            </Link>
+        </td>
     </div>
 
 class App extends Component {

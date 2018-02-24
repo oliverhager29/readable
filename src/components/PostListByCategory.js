@@ -140,11 +140,20 @@ class PostListByCategory extends Component {
                                                     </td>
                                                 </tr>
                                             )})}
+                                            <tr key="all">
+                                                <td>
+                                                    <Link to={{
+                                                        pathname: '/'
+                                                    }}>
+                                                        View Posts in all Categories
+                                                    </Link>
+                                                </td>
+                                            </tr>
                                         </tbody>
                                     </table>
                                 </div>
                                 <div id="postsByCategory">
-                                    <h1>Posts:</h1>
+                                    <h1>Posts in Category {category}:</h1>
                                     <table>
                                         <thead className={"table-header"}>
                                         <tr>

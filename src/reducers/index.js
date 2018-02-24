@@ -169,7 +169,7 @@ export function upVotePost(state=initialState, action) {
                 ...state.posts.byId,
                 [id]: {
                     id,
-                    title: post.id,
+                    title: post.title,
                     body: post.body,
                     author: post.author,
                     category: post.category,
@@ -204,7 +204,7 @@ export function downVotePost(state=initialState, action) {
                 ...state.posts.byId,
                 [id]: {
                     id,
-                    title: post.id,
+                    title: post.title,
                     body: post.body,
                     author: post.author,
                     category: post.category,

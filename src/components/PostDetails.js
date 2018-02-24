@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import CommentCreateEdit from "./CommentCreateEdit"
+import PostCreateEdit from "./PostCreateEdit"
+import {Link} from 'react-router-dom'
 import * as ReadableAPI from "../utils/ReadableAPI"
 import {
     addCategoriesAction, addCommentAction, addPostAction, downVoteCommentAction, downVotePostAction,
@@ -21,7 +23,53 @@ class PostDetails extends Component {
 
     state = {
         isCreateCommentModalOpen: false,
-        isEditCommentModalOpen: []
+        isEditCommentModalOpen: [],
+        isCreatePostModalOpen: false,
+        isEditPostModalOpen: false,
+    }
+
+    openCreatePostModal() {
+        this.setState(() => ({isCreatePostModalOpen: true}))
+    }
+
+    closeCreatePostModal(){
+        this.setState(() => ({isCreatePostModalOpen: false}))
+    }
+
+    openEditPostModal(index) {
+        this.setState(() => ({isEditPostModalOpen: true}))
+    }
+
+    closeEditPostModal(){
+        this.setState(() => ({isEditPostModalOpen: false}))
+    }
+
+    handleDownVotePost = (postId, index) => {
+        const {actions} = this.props
+        ReadableAPI.downVotePost(postId).then(
+            (post) => {
+                actions.downVotePostProp({id: post.id, voteScore: post.voteScore})
+            }
+        )
+    }
+
+    handleUpVotePost = (postId, index) => {
+        const {actions} = this.props
+        ReadableAPI.upVotePost(postId).then(
+            (post) => {
+                actions.upVotePostProp({id: post.id, voteScore: post.voteScore})
+            }
+        )
+    }
+
+    handleDeletePost = (postId, index) => {
+        const {actions} = this.props
+        ReadableAPI.deletePost(postId).then(
+            (post) => {
+                actions.removePostProp(post.id)
+                this.context.router.history.goBack()
+            }
+        )
     }
 
     componentDidMount() {
@@ -58,7 +106,7 @@ class PostDetails extends Component {
         this.setState(() => ({isEditCommentModalOpen: isEditCommentModalOpen}))
     }
 
-    handleDownVote = (commentId, index) => {
+    handleDownVoteComment = (commentId, index) => {
         const {actions} = this.props
         ReadableAPI.downVoteComment(commentId).then(
             (comment) => {
@@ -67,7 +115,7 @@ class PostDetails extends Component {
         )
     }
 
-    handleUpVote = (commentId, index) => {
+    handleUpVoteComment = (commentId, index) => {
         const {actions} = this.props
         ReadableAPI.upVoteComment(commentId).then(
             (comment) => {
@@ -76,7 +124,7 @@ class PostDetails extends Component {
         )
     }
 
-    handleDelete = (commentId, index) => {
+    handleDeleteComment = (commentId, index) => {
         const {actions} = this.props
         ReadableAPI.deleteComment(commentId).then(
             (comment) => {
@@ -114,6 +162,11 @@ class PostDetails extends Component {
         this.openEditCommentModal = this.openEditCommentModal.bind(this);
         this.closeEditCommentModal = this.closeEditCommentModal.bind(this);
 
+        this.openCreatePostModal = this.openCreatePostModal.bind(this);
+        this.closeCreatePostModal = this.closeCreatePostModal.bind(this);
+        this.openEditPostModal = this.openEditPostModal.bind(this);
+        this.closeEditPostModal = this.closeEditPostModal.bind(this);
+
         this.handleSortByTimestamp = this.handleSortByTimestamp.bind(this);
         this.handleSortByVoteScore = this.handleSortByVoteScore.bind(this);
     }
@@ -136,12 +189,21 @@ class PostDetails extends Component {
             comments = {allIds: [], byId: {}}
         }
         const {isSortedByTimestamp, isSortedByVoteScore, isAscending} = this.state
-        const handleDelete = this.handleDelete
+
+        const handleDeleteComment = this.handleDeleteComment
         const isEditCommentModalOpen = this.state.isEditCommentModalOpen
         const closeEditCommentModal = this.closeEditCommentModal
         const openEditCommentModal = this.openEditCommentModal
-        const handleDownVote = this.handleDownVote
-        const handleUpVote = this.handleUpVote
+        const handleDownVoteComment = this.handleDownVoteComment
+        const handleUpVoteComment = this.handleUpVoteComment
+
+        const handleDeletePost = this.handleDeletePost
+        const isEditPostModalOpen = this.state.isEditPostModalOpen
+        const closeEditPostModal = this.closeEditPostModal
+        const openEditPostModal = this.openEditPostModal
+        const handleDownVotePost = this.handleDownVotePost
+        const handleUpVotePost = this.handleUpVotePost
+
         const postDateTime = new Date(post.timestamp)
         const postDateTimeStr=postDateTime.toLocaleString()
         return (
@@ -159,6 +221,35 @@ class PostDetails extends Component {
                                 <tr className="table-row-even"><td className="table-column-label"><label className="field-label">Vote Score:</label></td><td className="table-column-value"><label className="field-value">{post.voteScore}</label></td></tr>
                                 <tr className="table-row-odd"><td className="table-column-label"><label className="field-label">Comment Count:</label></td><td className="table-column-value"><label className="field-value">{post.commentCount}</label></td></tr>
                                 </tbody>
+                            </table>
+                            <table>
+                                <tr>
+                                    <td><button onClick={() => handleDeletePost(post.id)} name="Delete">Delete</button></td>
+                                    <td><button onClick={() => handleDownVotePost(post.id)} name="Vote Down">Vote Down</button></td>
+                                    <td><button onClick={() => handleUpVotePost(post.id)} name="Vote Up">Vote Up</button></td>
+                                    <td>
+                                        <button
+                                            className='button'
+                                            onClick={() => openEditPostModal()}>
+                                            Edit
+                                        </button>
+                                        <div>
+                                            <Modal
+                                                className='modal'
+                                                overlayClassName='overlay'
+                                                isOpen={isEditPostModalOpen}
+                                                onRequestClose={closeEditPostModal}
+                                                contentLabel='Edit Post'
+                                                backdropColor = {'white'}
+                                                backdropOpacity = {1}
+                                                animationIn={'slideInLeft'}
+                                                animationOut={'slideOutRight'}
+                                            >
+                                                {isEditPostModalOpen && <PostCreateEdit closeModal={closeEditPostModal} postId={post.id}/>}
+                                            </Modal>
+                                        </div>
+                                    </td>
+                                </tr>
                             </table>
                         </div>
                         <div id="commentsForPost">
@@ -212,9 +303,9 @@ class PostDetails extends Component {
                                             <td>{comment.body}</td>
                                             <td>{comment.author}</td>
                                             <td>{comment.voteScore}</td>
-                                            <td><button onClick={() => handleDownVote(comment.id, index)} name="Vote Down">Vote Down</button></td>
-                                            <td><button onClick={() => handleUpVote(comment.id, index)} name="Vote Up">Vote Up</button></td>
-                                            <td><button onClick={() => handleDelete(comment.id, index)} name="Delete">Delete</button></td>
+                                            <td><button onClick={() => handleDownVoteComment(comment.id, index)} name="Vote Down">Vote Down</button></td>
+                                            <td><button onClick={() => handleUpVoteComment(comment.id, index)} name="Vote Up">Vote Up</button></td>
+                                            <td><button onClick={() => handleDeleteComment(comment.id, index)} name="Delete">Delete</button></td>
                                             <td>
                                                 <button
                                                     className='button'
@@ -252,6 +343,13 @@ class PostDetails extends Component {
                                             onClick={this.context.router.history.goBack}>
                                             Back
                                         </button>
+                                    </td>
+                                    <td>
+                                        <Link to={{
+                                            pathname: '/'
+                                        }}>
+                                            Home
+                                        </Link>
                                     </td>
                                     <td>
                                         <button
