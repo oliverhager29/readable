@@ -86,7 +86,7 @@ Redux store model (with sample data):
 Instructions to run:
 ```
 #install latest node js and npm
-git clone https://github.com/oliverhager29/readable
+unzip projetc2_oliver_hager.zip
 cd readable
 # installs all necessary node js packages
 npm install
